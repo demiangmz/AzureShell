@@ -1,0 +1,8 @@
+#Remove O365 and Azure login cookies
+##Useful if you get authentication errors when using multiple tenants from the same browser.
+
+([system.environment]::GetFolderPath('Cookies')) | Get-ChildItem -recurse | Select-String -pattern "microsoftonline" | group path | ForEach-Object { Remove-Item $_.name } 
+([system.environment]::GetFolderPath('Cookies')) | Get-ChildItem -recurse | Select-String -pattern "sharepoint.com" | group path | ForEach-Object { Remove-Item $_.name }
+([system.environment]::GetFolderPath('Cookies')) | Get-ChildItem -recurse | Select-String -pattern "azure.com" | group path | ForEach-Object { Remove-Item $_.name } 
+([system.environment]::GetFolderPath('Cookies')) | Get-ChildItem -recurse | Select-String -pattern "office.com" | group path | ForEach-Object { Remove-Item $_.name }
+([system.environment]::GetFolderPath('Cookies')) | Get-ChildItem -recurse | Select-String -pattern "microsofonline.com" | group path | ForEach-Object { Remove-Item $_.name }
