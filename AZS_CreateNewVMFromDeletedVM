@@ -1,0 +1,28 @@
+#Create a VM from another deleted VM (existing OS Disk & NIC objects)
+
+# Variables (replace with your environment properties)
+## Global
+$rgName = "ResourceGroup"
+$location = "westus"
+ 
+## Network
+$nicName = "NIC1"
+$subnetName = "Subnet"
+
+## Compute
+$vmName = "VM1"
+$computerName = "VM1"
+$vmSize = "Standard_A2"
+$osDiskName = $vmName + "-OSDisk"
+
+# Network
+$nic = Get-AzureRmNetworkInterface -Name $nicName -ResourceGroupName $rgName
+
+## Setup local VM object
+$vm = New-AzureRmVMConfig -VMName $vmName -VMSize $vmSize
+$vm = Add-AzureRmVMNetworkInterface -VM $vm -Id $nic.Id
+$osDiskUri = "https://storagegroupname.blob.core.windows.net/vhds/VM1.vhd"
+$vm = Set-AzureRmVMOSDisk -VM $vm -Name $osDiskName -VhdUri $osDiskUri -CreateOption attach -Windows
+
+## Create the VM in Azure
+New-AzureRmVM -ResourceGroupName $rgName -Location $location -VM $vm -Verbose
