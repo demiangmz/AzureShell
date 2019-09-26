@@ -1,4 +1,4 @@
-#Update AzureAD users "manager" field in bulk from CSV file 
+# Update AzureAD users "manager" field in bulk from CSV file 
   
 $ErrorActionPreference = "Continue" 
 Stop-Transcript | out-null 
