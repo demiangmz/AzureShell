@@ -1,24 +1,25 @@
+# Compatible with PS 5.1 only: https://learn.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0
 # Update AzureAD users "manager" field in bulk from CSV file 
   
 $ErrorActionPreference = "Continue" 
 Stop-Transcript | out-null 
   
-Start-Transcript -path C:\Temp\AzureADManagers.txt -append 
-$Users = Import-CSV -Path "C:\Temp\AzureADUsers.csv" 
+Start-Transcript -path C:\Temp\AzureADManagers.txt -append
+$Users = Import-CSV -Path "C:\Temp\AzureADUsers.csv"
    
-Write-Host -ForegroundColor White "Found: " + ($Users.Count()-1) + " users to update." 
-Write-Host -ForegroundColor White "------------------------------" 
-ForEach ($User in $Users) { 
-  Write-Host -ForegroundColor Green "Processing " + $User.UserUPN + " ..." 
- Try { 
-Set-AzureADUserManager -ObjectId $User.UsersObjectID -RefObjectId $User.ManagersObjectID         
-     } 
- Catch {  Write-Host "Error found:" $_.Exception -ForegroundColor Red  
-     } 
- Finally { Write-Host -ForegroundColor Yellow "Continuing with next user..."  
-   Write-Host -ForegroundColor White "------------------------------" 
- } 
-} 
-  
-Write-Host -ForegroundColor Cyan "PROCESS COMPLETED! 🙂" 
-Stop-Transcript 
+Write-Host -ForegroundColor White "Found: " + ($Users.Count()-1) + " users to update."
+Write-Host -ForegroundColor White "------------------------------"
+ForEach ($User in $Users) {
+  Write-Host -ForegroundColor Green "Processing " + $User.UserUPN + " ..."
+  Try {
+        Set-AzureADUserManager -ObjectId $User.UsersObjectID -RefObjectId $User.ManagersObjectID  
+      }
+ Catch {  Write-Host "Error found:" $_.Exception -ForegroundColor Red
+ }
+ Finally {  Write-Host -ForegroundColor Yellow "Continuing with next user..."
+            Write-Host -ForegroundColor White "------------------------------"
+ }
+}
+
+Write-Host -ForegroundColor Cyan "PROCESS COMPLETED! 🙂"
+Stop-Transcript
